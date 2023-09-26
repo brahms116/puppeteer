@@ -202,18 +202,18 @@ export interface BrowserEvents extends Record<EventType, unknown> {
  * @example Using a {@link Browser} to create a {@link Page}:
  *
  * ```ts
- * import puppeteer from 'puppeteer';
+ * import puppeteer from "puppeteer";
  *
  * const browser = await puppeteer.launch();
  * const page = await browser.newPage();
- * await page.goto('https://example.com');
+ * await page.goto("https://example.com");
  * await browser.close();
  * ```
  *
  * @example Disconnecting from and reconnecting to a {@link Browser}:
  *
  * ```ts
- * import puppeteer from 'puppeteer';
+ * import puppeteer from "puppeteer";
  *
  * const browser = await puppeteer.launch();
  * // Store the endpoint to be able to reconnect to the browser.
@@ -222,7 +222,7 @@ export interface BrowserEvents extends Record<EventType, unknown> {
  * browser.disconnect();
  *
  * // Use the endpoint to reestablish a connection
- * const browser2 = await puppeteer.connect({browserWSEndpoint});
+ * const browser2 = await puppeteer.connect({ browserWSEndpoint });
  * // Close the browser.
  * await browser2.close();
  * ```
@@ -284,7 +284,7 @@ export abstract class Browser extends EventEmitter<BrowserEvents> {
    * @example
    *
    * ```ts
-   * import puppeteer from 'puppeteer';
+   * import puppeteer from "puppeteer";
    *
    * const browser = await puppeteer.launch();
    * // Create a new incognito browser context.
@@ -292,7 +292,7 @@ export abstract class Browser extends EventEmitter<BrowserEvents> {
    * // Create a new page in a pristine context.
    * const page = await context.newPage();
    * // Do stuff
-   * await page.goto('https://example.com');
+   * await page.goto("https://example.com");
    * ```
    */
   abstract createIncognitoBrowserContext(
@@ -377,9 +377,9 @@ export abstract class Browser extends EventEmitter<BrowserEvents> {
    * @example Finding a target for a page opened via `window.open`:
    *
    * ```ts
-   * await page.evaluate(() => window.open('https://www.example.com/'));
+   * await page.evaluate(() => window.open("https://www.example.com/"));
    * const newWindowTarget = await browser.waitForTarget(
-   *   target => target.url() === 'https://www.example.com/'
+   *   (target) => target.url() === "https://www.example.com/",
    * );
    * ```
    */

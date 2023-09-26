@@ -19,8 +19,7 @@
 
 const prettier = require('@prettier/sync');
 
-const prettierConfigPath = '../../../.prettierrc.cjs';
-const prettierConfig = require(prettierConfigPath);
+const prettierConfig = require('./.trunk/configs/.prettierrc.cjs');
 
 const cleanupBlockComment = value => {
   return value

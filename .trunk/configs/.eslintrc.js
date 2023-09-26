@@ -12,7 +12,7 @@ module.exports = {
 
   plugins: ['mocha', '@typescript-eslint', 'import'],
 
-  extends: ['plugin:prettier/recommended', 'plugin:import/typescript'],
+  extends: ['prettier', 'plugin:import/typescript'],
 
   settings: {
     'import/resolver': {
@@ -25,8 +25,6 @@ module.exports = {
     curly: ['error', 'all'],
     // Brackets keep code readable and `return` intentions clear.
     'arrow-body-style': ['error', 'always'],
-    // Error if files are not formatted with Prettier correctly.
-    'prettier/prettier': 'error',
     // syntax preferences
     'spaced-comment': [
       'error',
@@ -138,12 +136,13 @@ module.exports = {
       files: ['*.ts'],
       parserOptions: {
         allowAutomaticSingleRunInference: true,
-        project: './tsconfig.base.json',
+        project: 'tsconfig.base.json',
       },
       extends: [
         'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/stylistic',
+        'prettier',
       ],
       plugins: ['eslint-plugin-tsdoc', 'rulesdir'],
       rules: {
