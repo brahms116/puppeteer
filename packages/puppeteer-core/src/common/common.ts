@@ -45,3 +45,4 @@ export * from './common.js';
 export * from './fetch.js';
 export * from './types.js';
 export * from './util.js';
+export * from './events.js';

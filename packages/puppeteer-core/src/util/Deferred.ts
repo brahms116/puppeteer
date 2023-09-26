@@ -17,10 +17,10 @@ export interface DeferredOptions {
  *
  * @internal
  */
-export class Deferred<T> {
+export class Deferred<T, V extends Error = Error> {
   #isResolved = false;
   #isRejected = false;
-  #value: T | Error | undefined;
+  #value: T | V | TimeoutError | undefined;
   #resolver: (value: void) => void = () => {};
   #taskPromise = new Promise<void>(resolve => {
     this.#resolver = resolve;
@@ -36,7 +36,7 @@ export class Deferred<T> {
         : undefined;
   }
 
-  #finish(value: T | Error) {
+  #finish(value: T | V | TimeoutError) {
     clearTimeout(this.#timeoutId);
     this.#value = value;
     this.#resolver();
@@ -50,7 +50,7 @@ export class Deferred<T> {
     this.#finish(value);
   }
 
-  reject(error: Error): void {
+  reject(error: V | TimeoutError): void {
     if (this.#isRejected || this.#isResolved) {
       return;
     }
@@ -66,7 +66,7 @@ export class Deferred<T> {
     return this.#isResolved || this.#isRejected;
   }
 
-  value(): T | Error | undefined {
+  value(): T | V | TimeoutError | undefined {
     return this.#value;
   }
 
@@ -78,8 +78,10 @@ export class Deferred<T> {
     return this.#value as T;
   }
 
-  static create<R>(opts?: DeferredOptions): Deferred<R> {
-    return new Deferred<R>(opts);
+  static create<R, X extends Error = Error>(
+    opts?: DeferredOptions
+  ): Deferred<R> {
+    return new Deferred<R, X>(opts);
   }
 
   static async race<R>(
