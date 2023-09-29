@@ -79,6 +79,7 @@ export class CdpFileChooser extends FileChooser {
         return path.resolve(filePath);
       }
     });
+
     /**
      * The zero-length array is a special case, it seems that
      * DOM.setFileInputFiles does not actually update the files in that case, so
@@ -86,10 +87,17 @@ export class CdpFileChooser extends FileChooser {
      */
     if (files.length === 0) {
       await this.#element.evaluate(element => {
-        element.files = new DataTransfer().files;
+        // Triggers `cancel` instead of `input` and `change` when there are
+        // no files.
+        if (!element.files?.length) {
+          element.dispatchEvent(new Event('cancel', {bubbles: true}));
+          return;
+        }
 
         // Dispatch events for this case because it should behave akin to a user action.
-        element.dispatchEvent(new Event('input', {bubbles: true}));
+        element.dispatchEvent(
+          new Event('input', {bubbles: true, composed: true})
+        );
         element.dispatchEvent(new Event('change', {bubbles: true}));
       });
       return;
@@ -107,11 +115,7 @@ export class CdpFileChooser extends FileChooser {
     });
   }
 
-  override cancel(): void {
-    assert(
-      !this.#handled,
-      'Cannot cancel FileChooser which is already handled!'
-    );
-    this.#handled = true;
+  override async cancel(): Promise<void> {
+    await this.accept([]);
   }
 }

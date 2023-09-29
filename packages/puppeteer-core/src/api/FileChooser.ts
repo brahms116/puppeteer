@@ -65,8 +65,8 @@ export class FileChooser {
   /**
    * Closes the file chooser without selecting any files.
    */
-  cancel(): void;
-  cancel(): void {
+  async cancel(): Promise<void>;
+  async cancel(): Promise<void> {
     throw new Error('Not implemented');
   }
 }
